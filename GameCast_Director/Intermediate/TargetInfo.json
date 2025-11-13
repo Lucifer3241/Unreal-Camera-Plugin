@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "GameCast_Director",
+			"Path": "..\\Source\\GameCast_Director.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "GameCast_DirectorEditor",
+			"Path": "..\\Source\\GameCast_DirectorEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

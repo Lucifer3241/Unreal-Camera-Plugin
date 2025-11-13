@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\GameCast_Director.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\GameCast_Director.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\GameCast_DirectorEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\GameCast_Director">
+      <UniqueIdentifier>{F1DEDB22-BA28-36E6-8712-3BECA73F5DF1}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\GameCast_Director\GameCast_Director.Build.cs">
+      <Filter>Source\GameCast_Director</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\GameCast_Director\GameCast_Director.cpp">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\GameCast_Director.h">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\GameCast_DirectorCameraManager.cpp">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\GameCast_DirectorCameraManager.h">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\GameCast_DirectorCharacter.cpp">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\GameCast_DirectorCharacter.h">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\GameCast_DirectorGameMode.cpp">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\GameCast_DirectorGameMode.h">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\GameCast_DirectorPlayerController.cpp">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\GameCast_DirectorPlayerController.h">
+      <Filter>Source\GameCast_Director</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Horror">
+      <UniqueIdentifier>{D471314A-CF70-3173-A2EC-1D5EAEE71894}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorCharacter.cpp">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorCharacter.h">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorGameMode.cpp">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorGameMode.h">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorPlayerController.cpp">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Horror\HorrorPlayerController.h">
+      <Filter>Source\GameCast_Director\Variant_Horror</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Horror\UI">
+      <UniqueIdentifier>{64BE3AF7-14CE-32E6-8A00-C0986C0C9793}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Horror\UI\HorrorUI.cpp">
+      <Filter>Source\GameCast_Director\Variant_Horror\UI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Horror\UI\HorrorUI.h">
+      <Filter>Source\GameCast_Director\Variant_Horror\UI</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Shooter">
+      <UniqueIdentifier>{8AEB5ECB-7B3E-3B61-AE9C-2A5C7C931937}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterCharacter.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterCharacter.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterGameMode.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterGameMode.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterPlayerController.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\ShooterPlayerController.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Shooter\AI">
+      <UniqueIdentifier>{122B8E54-158D-33D1-9BC9-A69A5B92E623}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\EnvQueryContext_Target.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\EnvQueryContext_Target.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterAIController.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterAIController.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterNPC.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterNPC.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterStateTreeUtility.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\AI\ShooterStateTreeUtility.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\AI</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Shooter\UI">
+      <UniqueIdentifier>{520CB99A-B10D-3FBA-AF2C-72C21A0E5DD0}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\UI\ShooterBulletCounterUI.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\UI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\UI\ShooterBulletCounterUI.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\UI</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\UI\ShooterUI.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\UI</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\UI\ShooterUI.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\UI</Filter>
+    </ClInclude>
+    <Filter Include="Source\GameCast_Director\Variant_Shooter\Weapons">
+      <UniqueIdentifier>{01200FA0-89F4-336B-BC90-9A51D648EF23}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterPickup.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterPickup.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterProjectile.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterProjectile.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterWeapon.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterWeapon.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterWeaponHolder.cpp">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\GameCast_Director\Variant_Shooter\Weapons\ShooterWeaponHolder.h">
+      <Filter>Source\GameCast_Director\Variant_Shooter\Weapons</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

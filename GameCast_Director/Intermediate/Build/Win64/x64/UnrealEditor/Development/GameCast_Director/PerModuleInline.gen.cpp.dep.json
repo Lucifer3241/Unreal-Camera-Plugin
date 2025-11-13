@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gamecast_director\\permoduleinline.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\x64\\gamecast_directoreditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gamecast_director\\definitions.gamecast_director.h",
+            "c:\\program files\\epic games\\ue_5.6\\engine\\source\\runtime\\core\\public\\hal\\permoduleinline.inl"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

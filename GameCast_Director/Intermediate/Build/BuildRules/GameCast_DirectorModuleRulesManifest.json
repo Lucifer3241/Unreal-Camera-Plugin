@@ -1,0 +1,8 @@
+{
+	"SourceFiles": [
+		"C:\\Users\\divit\\OneDrive\\Documents\\GitHub\\Unreal-Camera-Plugin\\GameCast_Director\\Source\\GameCast_Director\\GameCast_Director.Build.cs",
+		"C:\\Users\\divit\\OneDrive\\Documents\\GitHub\\Unreal-Camera-Plugin\\GameCast_Director\\Source\\GameCast_Director.Target.cs",
+		"C:\\Users\\divit\\OneDrive\\Documents\\GitHub\\Unreal-Camera-Plugin\\GameCast_Director\\Source\\GameCast_DirectorEditor.Target.cs"
+	],
+	"EngineVersion": "5.6.1"
+}

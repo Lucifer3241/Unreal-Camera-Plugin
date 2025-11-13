@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\unrealeditor\\inc\\gamecast_director\\uht\\gamecast_directorplayercontroller.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\x64\\gamecast_directoreditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.valexpapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gamecast_director\\definitions.gamecast_director.h",
+            "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\source\\gamecast_director\\gamecast_directorplayercontroller.h",
+            "c:\\users\\divit\\onedrive\\documents\\github\\unreal-camera-plugin\\gamecast_director\\intermediate\\build\\win64\\unrealeditor\\inc\\gamecast_director\\uht\\gamecast_directorplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}
