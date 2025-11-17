@@ -12,6 +12,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "CameraDirectorPawn.generated.h"
 
+class UCameraModeBase;
+
 UCLASS()
 class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
 {
@@ -47,8 +49,8 @@ public:
 
 
 	// Camera mode property
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	ECameraMode CameraMode;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	//ECameraMode CameraMode;
 
 	// Actor reference
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -60,11 +62,12 @@ public:
 	TSubclassOf<AActor> TargetActorClass;
 
 	
-
+	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")
+	TMap<ECameraMode, UCameraModeBase*> CameraModes;
 
 	// Function to set camera mode
-	UFUNCTION(BlueprintCallable, Category = "Camera")
-	void SetCameraMode(ECameraMode NewCameraMode);\
+	//UFUNCTION(BlueprintCallable, Category = "Camera")
+	//void SetCameraMode(ECameraMode NewCameraMode);
 
 	//set current actor
 	UFUNCTION(BlueprintCallable, Category = "Camera")
@@ -78,11 +81,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void PreviousActor();
 
-protected:
+public:
 
+	UFUNCTION(BlueprintCallable, Category = "CameraMode")
 	void ApplyCameraMode(ECameraMode Mode);
-
-
 
 	// Spring arm component for camera positioning
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -96,14 +98,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	UFloatingPawnMovement* MovementComponent;
 
-protected:
-
-	/** Called for movement input */
-	void Move(const FInputActionValue& Value);
-
-	/** Called for looking input */
-	void Look(const FInputActionValue& Value);
-
 	bool bAllowMovement = true;
 	bool bAllowLook = true;
 
@@ -111,7 +105,13 @@ protected:
 	TArray<AActor*> TargetActors;
 
 	// Current target actor
-	AActor* CurrentActor= nullptr;
+	AActor* CurrentActor = nullptr;
 
+protected:
 
+	/** Called for movement input */
+	void Move(const FInputActionValue& Value);
+
+	/** Called for looking input */
+	void Look(const FInputActionValue& Value);
 };
