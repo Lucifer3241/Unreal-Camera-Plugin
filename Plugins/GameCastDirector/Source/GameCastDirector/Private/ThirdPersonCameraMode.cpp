@@ -12,9 +12,12 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	CameraPawn->SpringArm->TargetArmLength = 300.0f;
 	CameraPawn->SpringArm->bUsePawnControlRotation = true;
 	CameraPawn->bUseControllerRotationYaw = true;
+	
+	//Don't allow movement or look in third person mode
 	CameraPawn->bAllowLook = false;
 	CameraPawn->bAllowMovement = false;
 
+	// Set CameraPawn location and rotation to match CurrentActor
 	if (CameraPawn->CurrentActor)
 	{
 		CameraPawn->SetActorLocation(CameraPawn->CurrentActor->GetActorLocation());

@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "CameraDirectorTypes.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "CameraDirectorPawn.generated.h"
 
 class UCameraModeBase;
+class UCameraComponent;
+class USpringArmComponent;
+class UFloatingPawnMovement;
 
 UCLASS()
 class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
@@ -61,7 +61,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<AActor> TargetActorClass;
 
-	
+	// Camera Modes Map
 	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")
 	TMap<ECameraMode, UCameraModeBase*> CameraModes;
 

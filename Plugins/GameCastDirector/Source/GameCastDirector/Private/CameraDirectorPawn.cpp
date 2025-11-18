@@ -4,6 +4,9 @@
 #include "CameraDirectorPawn.h"
 #include "Kismet/GameplayStatics.h"
 #include "CameraModeBase.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
 ACameraDirectorPawn::ACameraDirectorPawn()
@@ -202,6 +205,7 @@ void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 	//	break;
 	//}
 
+	//Check for camera mode in map
 	if (CameraModes.Contains(Mode))
 	{
 		UCameraModeBase* CameraModeInstance = CameraModes[Mode];
