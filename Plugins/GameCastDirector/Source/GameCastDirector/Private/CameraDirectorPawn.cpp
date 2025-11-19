@@ -3,8 +3,10 @@
 
 #include "CameraDirectorPawn.h"
 #include "Kismet/GameplayStatics.h"
-
-
+#include "CameraModeBase.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
 ACameraDirectorPawn::ACameraDirectorPawn()
@@ -27,7 +29,7 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 
 
 	// Default camera mode
-	CameraMode = ECameraMode::ThirdPerson;
+	/*CameraMode = ECameraMode::ThirdPerson;*/
 
 	// Create movement component
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("MovementComponent"));
@@ -42,7 +44,7 @@ void ACameraDirectorPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetCameraMode(CameraMode);
+	//SetCameraMode(CameraMode);
 
 	// Get all actors of the specified class in the level
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), TargetActorClass, TargetActors);
@@ -100,11 +102,11 @@ void ACameraDirectorPawn::NotifyControllerChanged()
 	}
 }
 
-void ACameraDirectorPawn::SetCameraMode(ECameraMode NewCameraMode)
-{
-	CameraMode = NewCameraMode;
-	ApplyCameraMode(NewCameraMode);
-}
+//void ACameraDirectorPawn::SetCameraMode(ECameraMode NewCameraMode)
+//{
+//	CameraMode = NewCameraMode;
+//	ApplyCameraMode(NewCameraMode);
+//}
 
 
 void ACameraDirectorPawn::SetCurrentActor(AActor* NewActor)
@@ -145,62 +147,72 @@ void ACameraDirectorPawn::PreviousActor()
 
 void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 {
-	switch (Mode)
+	//switch (Mode)
+	//{
+	//case ECameraMode::FirstPerson:
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
+	//	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//	SpringArm->TargetArmLength = 0.0f;
+	//	SpringArm->bUsePawnControlRotation = true;
+	//	bUseControllerRotationYaw = true;
+	//	bAllowLook = false;
+	//	bAllowMovement = false;
+	//	if(CurrentActor)
+	//	{
+	//		SetActorLocation(CurrentActor->GetActorLocation());
+	//		SetActorRotation(CurrentActor->GetActorRotation());
+	//	}
+	//	break;
+	//case ECameraMode::ThirdPerson:
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
+	//	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//	SpringArm->TargetArmLength = 300.0f;
+	//	SpringArm->bUsePawnControlRotation = true;
+	//	bUseControllerRotationYaw = true;
+	//	bAllowLook = false;
+	//	bAllowMovement = false;
+	//	if(CurrentActor)
+	//	{
+	//		SetActorLocation(CurrentActor->GetActorLocation());
+	//		SetActorRotation(CurrentActor->GetActorRotation());
+	//	}
+	//	break;
+	//case ECameraMode::Spectator:
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Spectator"));
+	//	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//	SpringArm->TargetArmLength = 600.0f;
+	//	SpringArm->bUsePawnControlRotation = true;
+	//	bUseControllerRotationYaw = false;
+	//	bAllowLook = true;
+	//	bAllowMovement = false;
+	//	if(CurrentActor)
+	//	{
+	//		SetActorLocation(CurrentActor->GetActorLocation());
+	//		SetActorRotation(CurrentActor->GetActorRotation());
+	//	}
+	//	break;
+	//case ECameraMode::FreeRoam:
+	//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Free Roam"));
+	//	Camera->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	//	SpringArm->bUsePawnControlRotation = false;
+	//	//SpringArm->TargetArmLength = 0.0f;
+	//	bUseControllerRotationYaw = true;
+	//	bUseControllerRotationPitch = true;
+	//	bAllowLook = true;
+	//	bAllowMovement = true;
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	//Check for camera mode in map
+	if (CameraModes.Contains(Mode))
 	{
-	case ECameraMode::FirstPerson:
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
-		Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		SpringArm->TargetArmLength = 0.0f;
-		SpringArm->bUsePawnControlRotation = true;
-		bUseControllerRotationYaw = true;
-		bAllowLook = false;
-		bAllowMovement = false;
-		if(CurrentActor)
+		UCameraModeBase* CameraModeInstance = CameraModes[Mode];
+		if (CameraModeInstance)
 		{
-			SetActorLocation(CurrentActor->GetActorLocation());
-			SetActorRotation(CurrentActor->GetActorRotation());
+			CameraModeInstance->EnterMode(this);
 		}
-		break;
-	case ECameraMode::ThirdPerson:
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
-		Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		SpringArm->TargetArmLength = 300.0f;
-		SpringArm->bUsePawnControlRotation = true;
-		bUseControllerRotationYaw = true;
-		bAllowLook = false;
-		bAllowMovement = false;
-		if(CurrentActor)
-		{
-			SetActorLocation(CurrentActor->GetActorLocation());
-			SetActorRotation(CurrentActor->GetActorRotation());
-		}
-		break;
-	case ECameraMode::Spectator:
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Spectator"));
-		Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		SpringArm->TargetArmLength = 600.0f;
-		SpringArm->bUsePawnControlRotation = true;
-		bUseControllerRotationYaw = false;
-		bAllowLook = true;
-		bAllowMovement = false;
-		if(CurrentActor)
-		{
-			SetActorLocation(CurrentActor->GetActorLocation());
-			SetActorRotation(CurrentActor->GetActorRotation());
-		}
-		break;
-	case ECameraMode::FreeRoam:
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Free Roam"));
-		Camera->AttachToComponent(RootComponent, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		SpringArm->bUsePawnControlRotation = false;
-		//SpringArm->TargetArmLength = 0.0f;
-		bUseControllerRotationYaw = true;
-		bUseControllerRotationPitch = true;
-		bAllowLook = true;
-		bAllowMovement = true;
-		break;
-	default:
-		break;
 	}
 }
 
