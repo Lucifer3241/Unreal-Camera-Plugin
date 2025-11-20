@@ -81,7 +81,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void PreviousActor();
 
-public:
+protected:
 
 	UFUNCTION(BlueprintCallable, Category = "CameraMode")
 	void ApplyCameraMode(ECameraMode Mode);
@@ -114,4 +114,11 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+public:
+	FORCEINLINE void SetAllowMovement(bool bInAllowMovement) { bAllowMovement = bInAllowMovement; };
+	FORCEINLINE void SetAllowLook(bool bInAllowLook) { bAllowLook = bInAllowLook; };
+	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; };
+	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; };
+	FORCEINLINE AActor* GetCurrentActor() { return CurrentActor; };
 };
