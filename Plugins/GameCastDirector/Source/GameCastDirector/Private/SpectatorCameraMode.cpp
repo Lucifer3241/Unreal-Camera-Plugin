@@ -1,25 +1,33 @@
 #include "SpectatorCameraMode.h"
 #include "CameraDirectorPawn.h"
 #include "GameFrameWork/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 void USpectatorCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 {
 	if (!CameraPawn) return;
 
+	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
+	if (!SpringArm) return;
+
+	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
+	if (!Camera) return;
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Spectator"));
-	CameraPawn->Camera->AttachToComponent(CameraPawn->SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	CameraPawn->SpringArm->TargetArmLength = 600.0f;
-	CameraPawn->SpringArm->bUsePawnControlRotation = true;
+	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	SpringArm->TargetArmLength = 600.0f;
+	SpringArm->bUsePawnControlRotation = true;
 	CameraPawn->bUseControllerRotationYaw = false;
 	
-	//Allow both movement and look in spectator mode
-	CameraPawn->bAllowLook = true;
-	CameraPawn->bAllowMovement = false;
+	//Allow look but not movement in spectator mode
+	CameraPawn->SetAllowLook(true);
+	CameraPawn->SetAllowMovement(false);
 
-	//Set CameraPawn location and rotation to match CurrentActor
-	if (CameraPawn->CurrentActor)
+	AActor* CurrentActor = CameraPawn->GetCurrentActor();
+	// Set CameraPawn location and rotation to match CurrentActor
+	if (CurrentActor)
 	{
-		CameraPawn->SetActorLocation(CameraPawn->CurrentActor->GetActorLocation());
-		CameraPawn->SetActorRotation(CameraPawn->CurrentActor->GetActorRotation());
+		CameraPawn->SetActorLocation(CurrentActor->GetActorLocation());
+		CameraPawn->SetActorRotation(CurrentActor->GetActorRotation());
 	}
 }
