@@ -61,6 +61,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	TSubclassOf<AActor> TargetActorClass;
 
+	// TargetActor Camera ref
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	FName TargetCameraName;
+
 	// Camera Modes Map
 	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")
 	TMap<ECameraMode, UCameraModeBase*> CameraModes;
