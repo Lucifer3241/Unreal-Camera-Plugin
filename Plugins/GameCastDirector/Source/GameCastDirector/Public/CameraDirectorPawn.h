@@ -81,6 +81,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void PreviousActor();
 
+	//copy camera settings from another CameraDirectorPawn
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void CopyCameraSettingsFrom(UCameraComponent* FromCamera, UCameraComponent* ToCamera);
+
 protected:
 
 	UFUNCTION(BlueprintCallable, Category = "CameraMode")

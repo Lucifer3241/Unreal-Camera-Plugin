@@ -145,6 +145,50 @@ void ACameraDirectorPawn::PreviousActor()
 	SetCurrentActor(TargetActors[PreviousIndex]);
 }
 
+void ACameraDirectorPawn::CopyCameraSettingsFrom(UCameraComponent* FromCamera, UCameraComponent* ToCamera)
+{
+	if(!FromCamera ||! ToCamera)
+		return;
+
+	//camera settings
+	ToCamera->ProjectionMode = FromCamera->ProjectionMode;
+
+	if(ToCamera->ProjectionMode == ECameraProjectionMode::Orthographic)
+	{
+		ToCamera->OrthoWidth = FromCamera->OrthoWidth;
+		ToCamera->bAutoCalculateOrthoPlanes = FromCamera->bAutoCalculateOrthoPlanes;
+		ToCamera->AutoPlaneShift = FromCamera->AutoPlaneShift;
+		ToCamera->OrthoNearClipPlane = FromCamera->OrthoNearClipPlane;
+		ToCamera->OrthoFarClipPlane = FromCamera->OrthoFarClipPlane;
+		ToCamera->bUpdateOrthoPlanes = FromCamera->bUpdateOrthoPlanes;
+		ToCamera->bUseCameraHeightAsViewTarget = FromCamera->bUseCameraHeightAsViewTarget;
+	}
+	else if(ToCamera->ProjectionMode == ECameraProjectionMode::Perspective)
+	{
+		ToCamera->FieldOfView = FromCamera->FieldOfView;
+	}
+	ToCamera->AspectRatio = FromCamera->AspectRatio;
+
+	ToCamera->FirstPersonFieldOfView = FromCamera->FirstPersonFieldOfView;
+	ToCamera->FirstPersonScale = FromCamera->FirstPersonScale;
+
+	//Camera options
+	ToCamera->bConstrainAspectRatio = FromCamera->bConstrainAspectRatio;
+	//ToCamera->bUsePawnControlRotation = FromCamera->bUsePawnControlRotation;
+	ToCamera->PostProcessBlendWeight = FromCamera->PostProcessBlendWeight;
+	ToCamera->AspectRatioAxisConstraint = FromCamera->AspectRatioAxisConstraint;
+
+	ToCamera->bOverrideAspectRatioAxisConstraint = FromCamera->bOverrideAspectRatioAxisConstraint;
+	ToCamera->bLockToHmd = FromCamera->bLockToHmd;
+	ToCamera->bEnableFirstPersonFieldOfView = FromCamera->bEnableFirstPersonFieldOfView;
+	ToCamera->bEnableFirstPersonScale = FromCamera->bEnableFirstPersonScale;
+	ToCamera->bUseFieldOfViewForLOD = FromCamera->bUseFieldOfViewForLOD;
+
+	//Post process settings
+	ToCamera->PostProcessSettings = FromCamera->PostProcessSettings;
+}
+
+
 void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 {
 	//switch (Mode)
