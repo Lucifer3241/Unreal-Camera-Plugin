@@ -49,8 +49,8 @@ public:
 
 
 	// Camera mode property
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	//ECameraMode CameraMode;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	ECameraMode CameraMode = ECameraMode::FirstPerson;
 
 	// Actor reference
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -63,7 +63,12 @@ public:
 
 	// TargetActor Camera ref
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	FName TargetCameraName;
+	FName PerspectiveModeCameraName;
+
+
+	// Third Person Spring Arm Length
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+	float ThirdPersonSpringArmLength = 300.0f;
 
 	// Camera Modes Map
 	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")

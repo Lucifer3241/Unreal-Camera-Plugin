@@ -9,12 +9,17 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
+
+	//detach SpringArm
+	//SpringArm->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	
 	//target the camera component
 
 	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
 	if (!Camera) return;
-	
+
+	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
 
 	/*Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
@@ -39,9 +44,9 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	if (CurrentActor)
 	{
 		UCameraComponent* CurrentActorCamera = nullptr;
-		if(CameraPawn->TargetCameraName != NAME_None)
+		if(CameraPawn->PerspectiveModeCameraName != NAME_None)
 		{		
-			CurrentActorCamera = Cast<UCameraComponent>(CurrentActor->GetDefaultSubobjectByName(CameraPawn->TargetCameraName));
+			CurrentActorCamera = Cast<UCameraComponent>(CurrentActor->GetDefaultSubobjectByName(CameraPawn->PerspectiveModeCameraName));
 		}
 		else
 		{
@@ -68,4 +73,6 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	//Don't allow movement or look in first person mode
 	CameraPawn->SetAllowLook(false);
 	CameraPawn->SetAllowMovement(false);
+
+	CameraPawn->CameraMode = ECameraMode::FirstPerson;
 }

@@ -120,11 +120,16 @@ void ACameraDirectorPawn::SetCurrentActor(AActor* NewActor)
 	}
 
 	CurrentActor = NewActor;
+
 	if (CurrentActor)
+	{
+		ApplyCameraMode(CameraMode);
+	}
+	/*if (CurrentActor)
 	{
 		AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		UE_LOG(LogTemp, Log, TEXT("CameraDirectorPawn: Set current actor to %s"), *CurrentActor->GetName());
-	}
+	}*/
 }
 
 void ACameraDirectorPawn::NextActor()
