@@ -61,6 +61,7 @@ void ACameraDirectorPawn::BeginPlay()
 	}
 
 	SetCurrentActor(ActorToUse);
+	ApplyCameraMode(StartCameraMode);
 	
 }
 
@@ -118,8 +119,14 @@ void ACameraDirectorPawn::SetCurrentActor(AActor* NewActor)
 		DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		UE_LOG(LogTemp, Log, TEXT("CameraDirectorPawn: Detached from previous actor %s"), *CurrentActor->GetName());
 	}
+	OldActor = CurrentActor;
 
 	CurrentActor = NewActor;
+
+	//log old and new actor names
+	UE_LOG(LogTemp, Log, TEXT("CameraDirectorPawn: Changed current actor from %s to %s"), 
+		OldActor ? *OldActor->GetName() : TEXT("None"), 
+		CurrentActor ? *CurrentActor->GetName() : TEXT("None"));
 
 	if (CurrentActor)
 	{
@@ -139,6 +146,7 @@ void ACameraDirectorPawn::NextActor()
 	int32 CurrentIndex = TargetActors.IndexOfByKey(CurrentActor);
 	int32 NextIndex = (CurrentIndex + 1) % TargetActors.Num();
 	SetCurrentActor(TargetActors[NextIndex]);
+
 }
 
 void ACameraDirectorPawn::PreviousActor()
@@ -148,6 +156,7 @@ void ACameraDirectorPawn::PreviousActor()
 	int32 CurrentIndex = TargetActors.IndexOfByKey(CurrentActor);
 	int32 PreviousIndex = (CurrentIndex - 1 + TargetActors.Num()) % TargetActors.Num();
 	SetCurrentActor(TargetActors[PreviousIndex]);
+
 }
 
 void ACameraDirectorPawn::CopyCameraSettingsFrom(UCameraComponent* FromCamera, UCameraComponent* ToCamera)
@@ -253,6 +262,16 @@ void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 	//default:
 	//	break;
 	//}
+	//if (CurrentActor != OldActor)
+	//{
+	//	if (this->CameraMode == Mode)
+	//	{
+	//		return; //already in this mode
+	//	}
+	//}
+
+
+
 
 	//Check for camera mode in map
 	if (CameraModes.Contains(Mode))
@@ -263,6 +282,7 @@ void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 			CameraModeInstance->EnterMode(this);
 		}
 	}
+	OldActor = CurrentActor;
 }
 
 

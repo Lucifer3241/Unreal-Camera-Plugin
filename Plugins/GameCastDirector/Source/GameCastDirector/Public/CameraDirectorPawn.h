@@ -47,10 +47,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Camera Start Mode
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+
+	ECameraMode StartCameraMode = ECameraMode::FirstPerson;
 
 	// Camera mode property
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
-	ECameraMode CameraMode = ECameraMode::FirstPerson;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
+	ECameraMode CameraMode = ECameraMode::None;
 
 	// Actor reference
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -120,6 +124,10 @@ protected:
 	// Current target actor
 	AActor* CurrentActor = nullptr;
 
+	//store old actor
+	AActor* OldActor = nullptr;
+
+
 protected:
 
 	/** Called for movement input */
@@ -134,4 +142,5 @@ public:
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; };
 	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; };
 	FORCEINLINE AActor* GetCurrentActor() { return CurrentActor; };
+	FORCEINLINE AActor* GetOldActor() { return OldActor; };
 };

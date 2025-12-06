@@ -7,6 +7,12 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 {
 	if (!CameraPawn) return;
 
+	if(CameraPawn->GetOldActor()==CameraPawn->GetCurrentActor() && CameraPawn->CameraMode == ECameraMode::FirstPerson)
+	{
+		//already in this mode with same actor
+		return;
+	}
+
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
 
@@ -21,6 +27,8 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
+	//print CameraPawn current actor name
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
 
 	/*Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	SpringArm->TargetArmLength = 0.0f;
@@ -40,6 +48,7 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	}*/
 	SpringArm->bUsePawnControlRotation = false;
 	CameraPawn->bUseControllerRotationYaw = false;
+	CameraPawn->bUseControllerRotationPitch = false;
 	AActor* CurrentActor = CameraPawn->GetCurrentActor();
 	if (CurrentActor)
 	{

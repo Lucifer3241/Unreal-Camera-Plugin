@@ -10,6 +10,12 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 
 	if (!CameraPawn) return;
 
+	if (CameraPawn->GetOldActor() == CameraPawn->GetCurrentActor() && CameraPawn->CameraMode == ECameraMode::ThirdPerson)
+	{
+		//already in this mode with same actor
+		return;
+	}
+
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
 
@@ -37,6 +43,14 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 
 	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
+	//get controller
+
+	AController* Controller = CameraPawn->GetController();
+	if (Controller)
+	{
+		Controller->SetControlRotation(FRotator::ZeroRotator);
+	}
+
 	SpringArm->TargetArmLength = CameraPawn->ThirdPersonSpringArmLength;
 	SpringArm->bUsePawnControlRotation = true;
 	SpringArm->bDoCollisionTest = true;
@@ -47,6 +61,8 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
+	//print CameraPawn current actor name
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
 	CameraPawn->CameraMode = ECameraMode::ThirdPerson;
 
 }
