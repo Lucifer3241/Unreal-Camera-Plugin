@@ -46,6 +46,7 @@ void UFreeRoamCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	//Allow both movement and look in free roam mode
 	CameraPawn->SetAllowLook(true);
 	CameraPawn->SetAllowMovement(true);
+	CameraPawn->SetCollisionEnabled(true);
 
 	CameraPawn->CameraMode = ECameraMode::FreeRoam;
 }

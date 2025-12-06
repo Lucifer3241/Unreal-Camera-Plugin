@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "CameraModeBase.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
 
@@ -14,7 +15,16 @@ ACameraDirectorPawn::ACameraDirectorPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	CollisionCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CollisionCapsule"));
+	RootComponent = CollisionCapsule;
+
+	CollisionCapsule->InitCapsuleSize(40.f, 40.f);
+	CollisionCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CollisionCapsule->SetCollisionResponseToAllChannels(ECR_Block);
+	CollisionCapsule->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	CollisionCapsule->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
+
+	//RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
 	// Create spring arm component
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -37,6 +47,20 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 
 	bUseControllerRotationYaw = true;
 
+}
+
+void ACameraDirectorPawn::SetCollisionEnabled(bool bEnabled)
+{
+	if (bEnabled)
+	{
+		CollisionCapsule->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		UE_LOG(LogTemp, Log, TEXT("Collision: ENABLED"));
+	}
+	else
+	{
+		CollisionCapsule->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		UE_LOG(LogTemp, Log, TEXT("Collision: DISABLED"));
+	}
 }
 
 // Called when the game starts or when spawned

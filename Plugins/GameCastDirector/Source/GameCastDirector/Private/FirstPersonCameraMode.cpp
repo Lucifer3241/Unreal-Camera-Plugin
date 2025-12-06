@@ -84,4 +84,5 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	CameraPawn->SetAllowMovement(false);
 
 	CameraPawn->CameraMode = ECameraMode::FirstPerson;
+	CameraPawn->SetCollisionEnabled(false);
 }

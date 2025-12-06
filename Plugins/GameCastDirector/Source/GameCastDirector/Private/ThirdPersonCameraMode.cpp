@@ -65,4 +65,6 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
 	CameraPawn->CameraMode = ECameraMode::ThirdPerson;
 
+	CameraPawn->SetCollisionEnabled(false);
+
 }

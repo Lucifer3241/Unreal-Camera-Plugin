@@ -43,6 +43,9 @@ protected:
 
 	virtual void NotifyControllerChanged() override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
+	class UCapsuleComponent* CollisionCapsule;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -81,6 +84,10 @@ public:
 	// Function to set camera mode
 	//UFUNCTION(BlueprintCallable, Category = "Camera")
 	//void SetCameraMode(ECameraMode NewCameraMode);
+
+	//Function to Enable collision
+	UFUNCTION(BlueprintCallable, Category = "Collision")
+	void SetCollisionEnabled(bool bEnabled);
 
 	//set current actor
 	UFUNCTION(BlueprintCallable, Category = "Camera")
