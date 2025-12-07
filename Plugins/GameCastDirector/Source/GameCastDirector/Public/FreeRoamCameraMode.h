@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CameraModeBase.h"
+#include "CameraTypeBase.h"
 #include "FreeRoamCameraMode.generated.h"
 
 UCLASS(Blueprintable, EditInlineNew, DefaultToInstanced)
-class GAMECASTDIRECTOR_API UFreeRoamCameraMode : public UCameraModeBase
+class GAMECASTDIRECTOR_API UFreeRoamCameraMode : public UCameraTypeBase
 {
 	GENERATED_BODY()
 

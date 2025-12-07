@@ -1,11 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CameraModeBase.h"
+#include "CameraTypeBase.h"
 #include "SpectatorCameraMode.generated.h"
 
 UCLASS(Blueprintable, EditInlineNew, DefaultToInstanced)
-class GAMECASTDIRECTOR_API USpectatorCameraMode : public UCameraModeBase
+class GAMECASTDIRECTOR_API USpectatorCameraMode : public UCameraTypeBase
 {
 	GENERATED_BODY()
 

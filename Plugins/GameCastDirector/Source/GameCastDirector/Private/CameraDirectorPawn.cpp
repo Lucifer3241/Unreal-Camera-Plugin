@@ -3,11 +3,12 @@
 
 #include "CameraDirectorPawn.h"
 #include "Kismet/GameplayStatics.h"
-#include "CameraModeBase.h"
+#include "CameraTypeBase.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "CameraTypeProfile.h"
 
 // Sets default values
 ACameraDirectorPawn::ACameraDirectorPawn()
@@ -82,6 +83,15 @@ void ACameraDirectorPawn::BeginPlay()
 	else if (TargetActors.Num() > 0)
 	{
 		ActorToUse = TargetActors[0];
+	}
+
+	//Check all required modes have profiles for the actor
+	for(auto& ModePair : CameraTypeProfiles)
+	{
+		if(!ModePair.Value)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: Camera Mode %d does not have a valid profile for Actor %s"), (uint8)ModePair.Key, *ActorToUse->GetName());
+		}
 	}
 
 	SetCurrentActor(ActorToUse);
@@ -294,13 +304,10 @@ void ACameraDirectorPawn::ApplyCameraMode(ECameraMode Mode)
 	//	}
 	//}
 
-
-
-
 	//Check for camera mode in map
 	if (CameraModes.Contains(Mode))
 	{
-		UCameraModeBase* CameraModeInstance = CameraModes[Mode];
+		UCameraTypeBase* CameraModeInstance = CameraModes[Mode];
 		if (CameraModeInstance)
 		{
 			CameraModeInstance->EnterMode(this);
@@ -331,4 +338,15 @@ void ACameraDirectorPawn::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(LookAxis.X);
 	AddControllerPitchInput(LookAxis.Y);
+}
+
+UCameraTypeProfile* ACameraDirectorPawn::GetCameraTypeProfile(ECameraMode Mode) const
+{
+	if(CameraTypeProfiles.Contains(Mode))
+	{
+		return CameraTypeProfiles[Mode];
+	}
+	
+	UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: No CameraTypeProfile found for mode %d"), static_cast<uint8>(Mode));
+	return nullptr;
 }

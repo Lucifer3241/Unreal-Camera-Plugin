@@ -2,6 +2,7 @@
 #include "CameraDirectorPawn.h"
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "CameraTypeProfile.h"
 
 void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 {
@@ -46,9 +47,7 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 		CameraPawn->SetActorLocation(CurrentActor->GetActorLocation());
 		CameraPawn->SetActorRotation(CurrentActor->GetActorRotation());
 	}*/
-	SpringArm->bUsePawnControlRotation = false;
-	CameraPawn->bUseControllerRotationYaw = false;
-	CameraPawn->bUseControllerRotationPitch = false;
+
 	AActor* CurrentActor = CameraPawn->GetCurrentActor();
 	if (CurrentActor)
 	{
@@ -78,11 +77,22 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 		CameraPawn->Controller->SetControlRotation(CurrentActor->GetActorRotation());*/
 	}
 	//Camera->AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	SpringArm->TargetArmLength = 0.0f;
-	//Don't allow movement or look in first person mode
-	CameraPawn->SetAllowLook(false);
-	CameraPawn->SetAllowMovement(false);
 
 	CameraPawn->CameraMode = ECameraMode::FirstPerson;
+	UCameraTypeProfile* CameraProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CameraMode);
+	if (!CameraProfile) return;
+
+	Camera->FieldOfView = CameraProfile->FieldOfView;
+
+	SpringArm->TargetArmLength = CameraProfile->TargetArmLength;
+	SpringArm->bUsePawnControlRotation = CameraProfile->bUsePawnControlRotation;
+	SpringArm->bDoCollisionTest = CameraProfile->bEnableCollision;
+	CameraPawn->bUseControllerRotationYaw = false;
+	CameraPawn->bUseControllerRotationPitch = false;
+
+	//Don't allow movement or look in first person mode
+	CameraPawn->SetAllowLook(CameraProfile->bAllowLook);
+	CameraPawn->SetAllowMovement(CameraProfile->bAllowMovement);
+
 	CameraPawn->SetCollisionEnabled(false);
 }

@@ -3,11 +3,10 @@
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
+#include "CameraTypeProfile.h"
 
 void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 {
-
-
 	if (!CameraPawn) return;
 
 	if (CameraPawn->GetOldActor() == CameraPawn->GetCurrentActor() && CameraPawn->CameraMode == ECameraMode::ThirdPerson)
@@ -51,20 +50,23 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 		Controller->SetControlRotation(FRotator::ZeroRotator);
 	}
 
-	SpringArm->TargetArmLength = CameraPawn->ThirdPersonSpringArmLength;
-	SpringArm->bUsePawnControlRotation = true;
-	SpringArm->bDoCollisionTest = true;
+	CameraPawn->CameraMode = ECameraMode::ThirdPerson;
+	UCameraTypeProfile* CameraProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CameraMode);
+	if (!CameraProfile) return;
 
-	CameraPawn->SetAllowLook(true);
-	CameraPawn->SetAllowMovement(false);
+	Camera->FieldOfView = CameraProfile->FieldOfView;
 
-	
+	SpringArm->TargetArmLength = CameraProfile->TargetArmLength;
+	SpringArm->bUsePawnControlRotation = CameraProfile->bUsePawnControlRotation;
+	SpringArm->bDoCollisionTest = CameraProfile->bEnableCollision;
+
+	CameraPawn->SetAllowLook(CameraProfile->bAllowLook);
+	CameraPawn->SetAllowMovement(CameraProfile->bAllowMovement);
+
+	CameraPawn->SetCollisionEnabled(false);
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
 	//print CameraPawn current actor name
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
-	CameraPawn->CameraMode = ECameraMode::ThirdPerson;
-
-	CameraPawn->SetCollisionEnabled(false);
-
+	
 }

@@ -2,6 +2,7 @@
 #include "CameraDirectorPawn.h"
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "CameraTypeProfile.h"
 
 void UFreeRoamCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 {
@@ -36,17 +37,22 @@ void UFreeRoamCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 	}
 	CameraPawn->SetActorLocation(CameraLocation);
 	
-	//No need to set TargetArmLength in free roam mode
-	//CameraPawn->SpringArm->TargetArmLength = 0.0f;
-	
-	SpringArm->bUsePawnControlRotation = false;
+	CameraPawn->CameraMode = ECameraMode::FreeRoam;
+	UCameraTypeProfile* CameraProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CameraMode);
+	if (!CameraProfile) return;
+
+	Camera->FieldOfView = CameraProfile->FieldOfView;
+
+	SpringArm->TargetArmLength = CameraProfile->TargetArmLength;
+	SpringArm->bUsePawnControlRotation = CameraProfile->bUsePawnControlRotation;
+	SpringArm->bDoCollisionTest = CameraProfile->bEnableCollision;
+
 	CameraPawn->bUseControllerRotationYaw = true;
 	CameraPawn->bUseControllerRotationPitch = true;
 	
 	//Allow both movement and look in free roam mode
-	CameraPawn->SetAllowLook(true);
-	CameraPawn->SetAllowMovement(true);
-	CameraPawn->SetCollisionEnabled(true);
+	CameraPawn->SetAllowLook(CameraProfile->bAllowLook);
+	CameraPawn->SetAllowMovement(CameraProfile->bAllowMovement);
 
-	CameraPawn->CameraMode = ECameraMode::FreeRoam;
+	CameraPawn->SetCollisionEnabled(true);
 }

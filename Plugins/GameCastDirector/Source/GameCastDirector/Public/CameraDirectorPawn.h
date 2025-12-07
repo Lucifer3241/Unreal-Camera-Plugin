@@ -9,10 +9,11 @@
 #include "EnhancedInputSubsystems.h"
 #include "CameraDirectorPawn.generated.h"
 
-class UCameraModeBase;
+class UCameraTypeBase;
 class UCameraComponent;
 class USpringArmComponent;
 class UFloatingPawnMovement;
+class UCameraTypeProfile;
 
 UCLASS()
 class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
@@ -79,7 +80,7 @@ public:
 
 	// Camera Modes Map
 	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")
-	TMap<ECameraMode, UCameraModeBase*> CameraModes;
+	TMap<ECameraMode, UCameraTypeBase*> CameraModes;
 
 	// Function to set camera mode
 	//UFUNCTION(BlueprintCallable, Category = "Camera")
@@ -150,4 +151,10 @@ public:
 	FORCEINLINE UCameraComponent* GetCameraComponent() { return Camera; };
 	FORCEINLINE AActor* GetCurrentActor() { return CurrentActor; };
 	FORCEINLINE AActor* GetOldActor() { return OldActor; };
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera|Profiles")
+	TMap<ECameraMode, UCameraTypeProfile*> CameraTypeProfiles;
+
+	UCameraTypeProfile* GetCameraTypeProfile(ECameraMode Mode) const;
 };
