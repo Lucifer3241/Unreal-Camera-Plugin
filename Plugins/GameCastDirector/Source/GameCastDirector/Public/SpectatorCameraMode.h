@@ -11,5 +11,7 @@ class GAMECASTDIRECTOR_API USpectatorCameraMode : public UCameraTypeBase
 
 public:
 	//Function to enter into Spectator Camera Mode
-	virtual void EnterMode(ACameraDirectorPawn* CameraPawn) override;
+	virtual void AttachCamera(ACameraDirectorPawn* CameraPawn) override;
+
+	virtual void CustomBehavior(ACameraDirectorPawn* CameraPawn) override;
 };

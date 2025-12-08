@@ -4,49 +4,26 @@
 #include "Camera/CameraComponent.h"
 #include "CameraTypeProfile.h"
 
-void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
+void UFirstPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
 	if (!CameraPawn) return;
 
-	if(CameraPawn->GetOldActor()==CameraPawn->GetCurrentActor() && CameraPawn->CameraMode == ECameraMode::FirstPerson)
-	{
-		//already in this mode with same actor
-		return;
-	}
+	//if(CameraPawn->GetOldActor()==CameraPawn->GetCurrentActor() && CameraPawn->CurrentCameraType == ECameraType::FirstPerson)
+	//{
+	//	//already in this mode with same actor
+	//	return;
+	//}
 
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
-
-	//detach SpringArm
-	//SpringArm->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	
 	//target the camera component
-
 	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
 	if (!Camera) return;
 
+	CameraPawn->CurrentCameraType = ECameraType::FirstPerson;
 	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
-	//print CameraPawn current actor name
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
-
-	/*Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	SpringArm->TargetArmLength = 0.0f;
-	SpringArm->bUsePawnControlRotation = true;
-	CameraPawn->bUseControllerRotationYaw = true;
-	
-	//Don't allow movement or look in first person mode
-	CameraPawn->SetAllowLook(false);
-	CameraPawn->SetAllowMovement(false);
-
-	AActor* CurrentActor = CameraPawn->GetCurrentActor();
-	// Set CameraPawn location and rotation to match CurrentActor
-	if (CurrentActor)
-	{
-		CameraPawn->SetActorLocation(CurrentActor->GetActorLocation());
-		CameraPawn->SetActorRotation(CurrentActor->GetActorRotation());
-	}*/
 
 	AActor* CurrentActor = CameraPawn->GetCurrentActor();
 	if (CurrentActor)
@@ -68,31 +45,24 @@ void UFirstPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 			CameraPawn->SetActorRelativeRotation(FRotator::ZeroRotator);
 			//set same camera settings
 			CameraPawn->CopyCameraSettingsFrom(CurrentActorCamera, Camera);
-			/*Camera->FieldOfView = CurrentActorCamera->FieldOfView;
-			Camera->SetAspectRatio(CurrentActorCamera->AspectRatio);
-			Camera->PostProcessSettings = CurrentActorCamera->PostProcessSettings;*/
 		}
-		/*CameraPawn->SetActorLocation(CurrentActor->GetActorLocation());
-		CameraPawn->SetActorRotation(CurrentActor->GetActorRotation());
-		CameraPawn->Controller->SetControlRotation(CurrentActor->GetActorRotation());*/
 	}
-	//Camera->AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
 
-	CameraPawn->CameraMode = ECameraMode::FirstPerson;
-	UCameraTypeProfile* CameraProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CameraMode);
-	if (!CameraProfile) return;
+void UFirstPersonCameraMode::CustomBehavior(ACameraDirectorPawn* CameraPawn)
+{
+	if (!CameraPawn) return;
 
-	Camera->FieldOfView = CameraProfile->FieldOfView;
-
-	SpringArm->TargetArmLength = CameraProfile->TargetArmLength;
-	SpringArm->bUsePawnControlRotation = CameraProfile->bUsePawnControlRotation;
-	SpringArm->bDoCollisionTest = CameraProfile->bEnableCollision;
-	CameraPawn->bUseControllerRotationYaw = false;
+	//Custom behavior for first person camera mode can be added here
 	CameraPawn->bUseControllerRotationPitch = false;
-
-	//Don't allow movement or look in first person mode
-	CameraPawn->SetAllowLook(CameraProfile->bAllowLook);
-	CameraPawn->SetAllowMovement(CameraProfile->bAllowMovement);
+	CameraPawn->bUseControllerRotationYaw = false;
 
 	CameraPawn->SetCollisionEnabled(false);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: First Person"));
+		//print CameraPawn current actor name
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
+	}
 }

@@ -54,11 +54,11 @@ public:
 	// Camera Start Mode
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 
-	ECameraMode StartCameraMode = ECameraMode::FirstPerson;
+	ECameraType StartCameraType = ECameraType::ThirdPerson;
 
 	// Camera mode property
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Camera")
-	ECameraMode CameraMode = ECameraMode::None;
+	ECameraType CurrentCameraType = ECameraType::None;
 
 	// Actor reference
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -79,8 +79,8 @@ public:
 	float ThirdPersonSpringArmLength = 300.0f;
 
 	// Camera Modes Map
-	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraModes")
-	TMap<ECameraMode, UCameraTypeBase*> CameraModes;
+	UPROPERTY(EditAnywhere, Instanced, BlueprintReadWrite, Category = "CameraTypes")
+	TMap<ECameraType, UCameraTypeBase*> CameraTypes;
 
 	// Function to set camera mode
 	//UFUNCTION(BlueprintCallable, Category = "Camera")
@@ -109,7 +109,7 @@ public:
 protected:
 
 	UFUNCTION(BlueprintCallable, Category = "CameraMode")
-	void ApplyCameraMode(ECameraMode Mode);
+	void ApplyCameraMode(ECameraType Type);
 
 	// Spring arm component for camera positioning
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -154,7 +154,7 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera|Profiles")
-	TMap<ECameraMode, UCameraTypeProfile*> CameraTypeProfiles;
+	TMap<ECameraType, UCameraTypeProfile*> CameraTypeProfiles;
 
-	UCameraTypeProfile* GetCameraTypeProfile(ECameraMode Mode) const;
+	UCameraTypeProfile* GetCameraTypeProfile(ECameraType Type) const;
 };

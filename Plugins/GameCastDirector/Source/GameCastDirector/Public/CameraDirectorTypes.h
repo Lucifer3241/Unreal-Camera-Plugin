@@ -4,7 +4,7 @@
 #include "CameraDirectorTypes.generated.h"
 
 UENUM(BlueprintType)
-enum class ECameraMode : uint8
+enum class ECameraType : uint8
 {
 	None UMETA(DisplayName = "None"),
 	FirstPerson UMETA(DisplayName = "First Person"),

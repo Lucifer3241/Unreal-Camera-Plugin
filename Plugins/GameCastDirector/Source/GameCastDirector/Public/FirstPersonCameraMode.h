@@ -11,5 +11,7 @@ class GAMECASTDIRECTOR_API UFirstPersonCameraMode : public UCameraTypeBase
 
 public:
 	// Function to enter into First Person Camera Mode
-	virtual void EnterMode(ACameraDirectorPawn* CameraPawn) override;
+	virtual void AttachCamera(ACameraDirectorPawn* CameraPawn) override;
+
+	virtual void CustomBehavior(ACameraDirectorPawn* CameraPawn) override;
 };

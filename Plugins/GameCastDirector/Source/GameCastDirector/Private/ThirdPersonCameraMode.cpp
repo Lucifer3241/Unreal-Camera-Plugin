@@ -5,21 +5,22 @@
 #include "Camera/CameraComponent.h"
 #include "CameraTypeProfile.h"
 
-void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
+void UThirdPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
 	if (!CameraPawn) return;
 
-	if (CameraPawn->GetOldActor() == CameraPawn->GetCurrentActor() && CameraPawn->CameraMode == ECameraMode::ThirdPerson)
-	{
-		//already in this mode with same actor
-		return;
-	}
+	//if (CameraPawn->GetOldActor() == CameraPawn->GetCurrentActor() && CameraPawn->CurrentCameraType == ECameraType::ThirdPerson)
+	//{
+	//	//already in this mode with same actor
+	//	return;
+	//}
 
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
 
 	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
 	if (!Camera) return;
+	CameraPawn->CurrentCameraType = ECameraType::ThirdPerson;
 
 	AActor* CurrentActor = CameraPawn->GetCurrentActor();
 	if (!CurrentActor) return;
@@ -35,38 +36,31 @@ void UThirdPersonCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 		SkeletalMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	}
 
-
-	//CameraPawn->AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
 	SpringArm->AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
 	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 	//get controller
-
 	AController* Controller = CameraPawn->GetController();
 	if (Controller)
 	{
 		Controller->SetControlRotation(FRotator::ZeroRotator);
 	}
+}
 
-	CameraPawn->CameraMode = ECameraMode::ThirdPerson;
-	UCameraTypeProfile* CameraProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CameraMode);
-	if (!CameraProfile) return;
+void UThirdPersonCameraMode::CustomBehavior(ACameraDirectorPawn* CameraPawn)
+{
+	if (!CameraPawn) return;
 
-	Camera->FieldOfView = CameraProfile->FieldOfView;
-
-	SpringArm->TargetArmLength = CameraProfile->TargetArmLength;
-	SpringArm->bUsePawnControlRotation = CameraProfile->bUsePawnControlRotation;
-	SpringArm->bDoCollisionTest = CameraProfile->bEnableCollision;
-
-	CameraPawn->SetAllowLook(CameraProfile->bAllowLook);
-	CameraPawn->SetAllowMovement(CameraProfile->bAllowMovement);
+	//Custom behavior for Third Person Camera Mode can be added here
+	CameraPawn->bUseControllerRotationPitch = false;
+	CameraPawn->bUseControllerRotationYaw = false;
 
 	CameraPawn->SetCollisionEnabled(false);
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
-	//print CameraPawn current actor name
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
-	
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Camera Mode: Third Person"));
+		//print CameraPawn current actor name
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Current Actor: %s"), *CameraPawn->GetCurrentActor()->GetName()));
+	}
 }

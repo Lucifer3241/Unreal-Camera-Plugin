@@ -3,7 +3,7 @@
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
-void USpectatorCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
+void USpectatorCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
 	if (!CameraPawn) return;
 
@@ -30,4 +30,8 @@ void USpectatorCameraMode::EnterMode(ACameraDirectorPawn* CameraPawn)
 		CameraPawn->SetActorLocation(CurrentActor->GetActorLocation());
 		CameraPawn->SetActorRotation(CurrentActor->GetActorRotation());
 	}
+}
+
+void USpectatorCameraMode::CustomBehavior(ACameraDirectorPawn* CameraPawn)
+{
 }
