@@ -4,6 +4,7 @@
 #include "CameraDirectorPawn.h"
 #include "CameraTypeBase.h"
 #include "CameraTypeProfile.h"
+#include "CameraMomentRecorder.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/FloatingPawnMovement.h"
@@ -111,7 +112,8 @@ void ACameraDirectorPawn::BeginPlay()
 
 	SetCurrentActor(ActorToUse);
 	ApplyCameraMode(StartCameraType);
-	
+
+	MomentRecorder = NewObject<UCameraMomentRecorder>(this);	
 }
 
 // Called every frame
@@ -288,4 +290,16 @@ UCameraTypeProfile* ACameraDirectorPawn::GetCameraTypeProfile(ECameraType Type) 
 	
 	UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: No CameraTypeProfile found for mode %d"), static_cast<uint8>(Type));
 	return nullptr;
+}
+
+void ACameraDirectorPawn::RecordCameraMoment()
+{
+	if (!MomentRecorder) return;
+	MomentRecorder->RecordMoment(this);
+}
+
+void ACameraDirectorPawn::GotoCameraMoment(int32 Index)
+{
+	if(!MomentRecorder) return;
+	MomentRecorder->GoToMoment(this, Index);
 }

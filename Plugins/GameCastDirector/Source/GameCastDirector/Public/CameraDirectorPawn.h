@@ -16,6 +16,7 @@ class UFloatingPawnMovement;
 class UCameraTypeProfile;
 class USceneCaptureComponent2D;
 class UTextureRenderTarget2D;
+class UCameraMomentRecorder;
 
 UCLASS()
 class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
@@ -108,10 +109,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void CopyCameraSettingsFrom(UCameraComponent* FromCamera, UCameraComponent* ToCamera);
 
-protected:
-
 	UFUNCTION(BlueprintCallable, Category = "CameraMode")
 	void ApplyCameraMode(ECameraType Type);
+
+protected:
 
 	// Spring arm component for camera positioning
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -170,4 +171,15 @@ protected:
 public:
 	FORCEINLINE USceneCaptureComponent2D* GetSceneCaptureComponent() { return SceneCaptureComponent; };
 	FORCEINLINE UTextureRenderTarget2D* GetRenderTarget() { return RenderTarget; };
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Recording")
+	UCameraMomentRecorder* MomentRecorder;
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	void RecordCameraMoment();
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	void GotoCameraMoment(int32 Index);
 };
