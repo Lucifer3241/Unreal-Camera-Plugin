@@ -14,6 +14,8 @@ class UCameraComponent;
 class USpringArmComponent;
 class UFloatingPawnMovement;
 class UCameraTypeProfile;
+class USceneCaptureComponent2D;
+class UTextureRenderTarget2D;
 
 UCLASS()
 class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
@@ -157,4 +159,15 @@ public:
 	TMap<ECameraType, UCameraTypeProfile*> CameraTypeProfiles;
 
 	UCameraTypeProfile* GetCameraTypeProfile(ECameraType Type) const;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Render")
+	USceneCaptureComponent2D* SceneCaptureComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera|Render")
+	UTextureRenderTarget2D* RenderTarget;
+
+public:
+	FORCEINLINE USceneCaptureComponent2D* GetSceneCaptureComponent() { return SceneCaptureComponent; };
+	FORCEINLINE UTextureRenderTarget2D* GetRenderTarget() { return RenderTarget; };
 };

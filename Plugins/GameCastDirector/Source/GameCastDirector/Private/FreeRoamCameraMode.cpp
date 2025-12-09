@@ -3,6 +3,7 @@
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CameraTypeProfile.h"
+#include "Components/SceneCaptureComponent2D.h"
 
 void UFreeRoamCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
@@ -25,6 +26,12 @@ void UFreeRoamCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 	FRotator CameraRotation = Camera->GetComponentRotation();
 
 	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	USceneCaptureComponent2D* Capture = CameraPawn->GetSceneCaptureComponent();
+	if (!Capture) return;
+	Capture->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	Capture->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
 	CameraPawn->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	CameraPawn->SetActorLocation(Camera->GetComponentLocation());
 
