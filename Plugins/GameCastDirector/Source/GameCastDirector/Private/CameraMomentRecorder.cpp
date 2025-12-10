@@ -18,10 +18,10 @@ void UCameraMomentRecorder::RecordMoment(ACameraDirectorPawn* CameraPawn)
 	NewMoment.Location = Camera->GetComponentLocation();
 	NewMoment.Rotation = Camera->GetComponentRotation();
 
-	NewMoment.CameraType = CameraPawn->CurrentCameraType;
+	NewMoment.CameraType = ECameraType::Spectator;
 
 	//Get current profile name
-	UCameraTypeProfile* CurrentProfile = CameraPawn->GetCameraTypeProfile(CameraPawn->CurrentCameraType);
+	UCameraTypeProfile* CurrentProfile = CameraPawn->GetCameraTypeProfile(NewMoment.CameraType);
 	if(!CurrentProfile)
 	{
 		NewMoment.ProfileName = "Default";
@@ -54,7 +54,7 @@ void UCameraMomentRecorder::GoToMoment(ACameraDirectorPawn* CameraPawn, int32 In
 	const FCameraBookmark& Moment = RecordedMoments[Index];
 
 	//Switch camera type
-	CameraPawn->ApplyCameraMode(Moment.CameraType);
+	//CameraPawn->ApplyCameraMode(Moment.CameraType);
 	CameraPawn->SetCameraLockedToMoments(true);
 
 	//Wait a frame to ensure camera mode is applied

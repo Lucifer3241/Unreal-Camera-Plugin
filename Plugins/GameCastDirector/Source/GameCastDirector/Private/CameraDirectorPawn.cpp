@@ -158,8 +158,8 @@ void ACameraDirectorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInput
 			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::FirstPerson);
 		EnhancedInputComponent->BindAction(ThirdPersonAction, ETriggerEvent::Started, this,
 			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::ThirdPerson);
-		//EnhancedInputComponent->BindAction(SpectatorAction, ETriggerEvent::Started, this,
-		//	&ACameraDirectorPawn::ApplyCameraMode, ECameraType::Spectator);
+		EnhancedInputComponent->BindAction(SpectatorAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::Spectator);
 		EnhancedInputComponent->BindAction(FreeRoamAction, ETriggerEvent::Started, this,
 			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::FreeRoam);
 
