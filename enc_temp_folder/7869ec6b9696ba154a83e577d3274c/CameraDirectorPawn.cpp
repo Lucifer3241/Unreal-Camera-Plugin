@@ -4,7 +4,6 @@
 #include "CameraDirectorPawn.h"
 #include "CameraTypeBase.h"
 #include "CameraTypeProfile.h"
-#include "CameraMomentRecorder.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/FloatingPawnMovement.h"
@@ -48,10 +47,10 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 
 	//Create default scene capture component
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent"));
-	SceneCaptureComponent->SetupAttachment(Camera);
+	SceneCaptureComponent->SetupAttachment(SpringArm);
 
-	SceneCaptureComponent->bCaptureEveryFrame = false;
-	SceneCaptureComponent->bCaptureOnMovement = true;
+	SceneCaptureComponent->bCaptureEveryFrame = true;
+	SceneCaptureComponent->bCaptureOnMovement = false;
 
 }
 
@@ -112,8 +111,7 @@ void ACameraDirectorPawn::BeginPlay()
 
 	SetCurrentActor(ActorToUse);
 	ApplyCameraMode(StartCameraType);
-
-	MomentRecorder = NewObject<UCameraMomentRecorder>(this);	
+	
 }
 
 // Called every frame
@@ -122,11 +120,6 @@ void ACameraDirectorPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	DrawDebugSphere(GetWorld(), Camera->GetComponentLocation(), 10, 8, FColor::Green);
 	DrawDebugSphere(GetWorld(), SceneCaptureComponent->GetComponentLocation(), 10, 8, FColor::Red);
-
-	SceneCaptureComponent->CaptureScene();
-	//SceneCaptureComponent->AddLocalOffset(FVector(0.0001f, 0, 0));
-
-
 
 }
 
@@ -293,45 +286,4 @@ UCameraTypeProfile* ACameraDirectorPawn::GetCameraTypeProfile(ECameraType Type) 
 	
 	UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: No CameraTypeProfile found for mode %d"), static_cast<uint8>(Type));
 	return nullptr;
-}
-
-void ACameraDirectorPawn::RecordCameraMoment()
-{
-	if (!MomentRecorder) return;
-	MomentRecorder->RecordMoment(this);
-}
-
-void ACameraDirectorPawn::GotoCameraMoment(int32 Index)
-{
-	if(!MomentRecorder) return;
-	MomentRecorder->GoToMoment(this, Index);
-}
-
-void ACameraDirectorPawn::GotoNextCameraHotPoint()
-{
-	if(MomentRecorder)
-	{
-		MomentRecorder->GoToNextHotPoint(this);
-	}
-}
-
-void ACameraDirectorPawn::GotoPreviousCameraHotPoint()
-{
-	if(MomentRecorder)
-	{
-		MomentRecorder->GoToPreviousHotPoint(this);
-	}
-}
-
-void ACameraDirectorPawn::SetCameraLockedToMoments(bool bLocked)
-{
-	bCameraLockedToMoments = bLocked;
-	
-	SetAllowLook(!bLocked);
-	SetAllowMovement(!bLocked);
-
-	if (!SpringArm) return;
-
-	SpringArm->bUsePawnControlRotation = !bLocked;
-	SetCollisionEnabled(!bLocked);
 }
