@@ -27,13 +27,13 @@ void UFreeRoamCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 
 	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
+	CameraPawn->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	CameraPawn->SetActorLocation(Camera->GetComponentLocation());
+
 	USceneCaptureComponent2D* Capture = CameraPawn->GetSceneCaptureComponent();
 	if (!Capture) return;
 	Capture->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	Capture->AttachToComponent(CameraPawn->GetCameraComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-
-	CameraPawn->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-	CameraPawn->SetActorLocation(Camera->GetComponentLocation());
 
 	AController* Controller = CameraPawn->GetController();
 	if (Controller)

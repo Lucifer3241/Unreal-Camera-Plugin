@@ -115,7 +115,8 @@ public:
 	void ApplyCameraMode(ECameraType Type);
 
 protected:
-	void SyncSceneCaptureWithCamera();
+	
+	//void SyncSceneCaptureWithCamera();
 
 	// Spring arm component for camera positioning
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
@@ -190,8 +191,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
 	void RecordCameraMoment();
 
-	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
-	void GotoCameraMoment(int32 Index);
+	//UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	//void GotoCameraMoment(int32 Index);
 
 	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
 	void GotoNextCameraHotPoint();
@@ -201,4 +202,30 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
 	void SetCameraLockedToMoments(bool bLocked);
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	FORCEINLINE UCameraMomentRecorder* GetMomentRecorder() { return MomentRecorder; };
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* FirstPersonAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* ThirdPersonAction;
+
+	//UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	//UInputAction* SpectatorAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* FreeRoamAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* RecordMomentAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* NextMomentAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+	UInputAction* PreviousMomentAction;
 };

@@ -41,4 +41,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Camera|MomentRecorder")
 	void GoToPreviousHotPoint(ACameraDirectorPawn* CameraPawn);
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|MomentRecorder")
+	FORCEINLINE int32 GetRecordedMomentCount() const { return RecordedMoments.Num(); };
 };
