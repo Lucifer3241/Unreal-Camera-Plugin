@@ -47,19 +47,23 @@ void UCameraMomentRecorder::GoToMoment(ACameraDirectorPawn* CameraPawn, int32 In
 	if (!CameraPawn) return;
 	
 	if (!RecordedMoments.IsValidIndex(Index)) return;
+
+	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
+	if (!Camera) return;
 	
 	const FCameraBookmark& Moment = RecordedMoments[Index];
 
 	//Switch camera type
 	CameraPawn->ApplyCameraMode(Moment.CameraType);
+	CameraPawn->SetCameraLockedToMoments(true);
 
 	//Wait a frame to ensure camera mode is applied
 	FTimerHandle TimerHandle;
-	CameraPawn->GetWorldTimerManager().SetTimer(TimerHandle, [CameraPawn, Moment]()
+	CameraPawn->GetWorldTimerManager().SetTimer(TimerHandle, [Camera, Moment]()
 	{
 		//Set location and rotation
-		CameraPawn->SetActorLocation(Moment.Location);
-		CameraPawn->SetActorRotation(Moment.Rotation);
+		Camera->SetWorldLocation(Moment.Location);
+		Camera->SetWorldRotation(Moment.Rotation);
 
 	}, 0.02f, false);
 
@@ -67,4 +71,24 @@ void UCameraMomentRecorder::GoToMoment(ACameraDirectorPawn* CameraPawn, int32 In
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Yellow, TEXT("Went to Camera Moment"));
 	}
+}
+
+void UCameraMomentRecorder::GoToNextHotPoint(ACameraDirectorPawn* CameraPawn)
+{
+	if (!CameraPawn) return;
+	if (RecordedMoments.Num() == 0) return;
+
+	//Get the index of the next hot point, wrapping around if at the end
+	CurrentHotPointIndex = (CurrentHotPointIndex + 1) % RecordedMoments.Num();
+	GoToMoment(CameraPawn, CurrentHotPointIndex);
+}
+
+void UCameraMomentRecorder::GoToPreviousHotPoint(ACameraDirectorPawn* CameraPawn)
+{
+	if(!CameraPawn) return;
+	if (RecordedMoments.Num() == 0) return;
+
+	//Get the index of the previous hot point, wrapping around if at the start
+	CurrentHotPointIndex = (CurrentHotPointIndex - 1 + RecordedMoments.Num()) % RecordedMoments.Num();
+	GoToMoment(CameraPawn, CurrentHotPointIndex);
 }

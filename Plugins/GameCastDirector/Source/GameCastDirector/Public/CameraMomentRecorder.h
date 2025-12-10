@@ -30,4 +30,15 @@ protected:
 	//Store camera moments
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|MomentRecorder")
 	TArray<FCameraBookmark> RecordedMoments;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|MomentRecorder")
+	int32 CurrentHotPointIndex = 0;
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|MomentRecorder")
+	void GoToNextHotPoint(ACameraDirectorPawn* CameraPawn);
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|MomentRecorder")
+	void GoToPreviousHotPoint(ACameraDirectorPawn* CameraPawn);
 };

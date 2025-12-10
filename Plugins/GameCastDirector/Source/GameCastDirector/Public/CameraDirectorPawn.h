@@ -24,10 +24,12 @@ class GAMECASTDIRECTOR_API ACameraDirectorPawn : public APawn
 	GENERATED_BODY()
 
 public:
+	
 	// Sets default values for this pawn's properties
 	ACameraDirectorPawn();
 
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -50,7 +52,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Collision")
 	class UCapsuleComponent* CollisionCapsule;
 
-public:	
+public:
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -75,7 +78,6 @@ public:
 	// TargetActor Camera ref
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 	FName PerspectiveModeCameraName;
-
 
 	// Third Person Spring Arm Length
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
@@ -138,7 +140,6 @@ protected:
 	//store old actor
 	AActor* OldActor = nullptr;
 
-
 protected:
 
 	/** Called for movement input */
@@ -148,6 +149,7 @@ protected:
 	void Look(const FInputActionValue& Value);
 
 public:
+
 	FORCEINLINE void SetAllowMovement(bool bInAllowMovement) { bAllowMovement = bInAllowMovement; };
 	FORCEINLINE void SetAllowLook(bool bInAllowLook) { bAllowLook = bInAllowLook; };
 	FORCEINLINE USpringArmComponent* GetSpringArmComponent() { return SpringArm; };
@@ -156,12 +158,14 @@ public:
 	FORCEINLINE AActor* GetOldActor() { return OldActor; };
 
 public:
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Camera|Profiles")
 	TMap<ECameraType, UCameraTypeProfile*> CameraTypeProfiles;
 
 	UCameraTypeProfile* GetCameraTypeProfile(ECameraType Type) const;
 
 protected:
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Render")
 	USceneCaptureComponent2D* SceneCaptureComponent;
 
@@ -169,6 +173,7 @@ protected:
 	UTextureRenderTarget2D* RenderTarget;
 
 public:
+
 	FORCEINLINE USceneCaptureComponent2D* GetSceneCaptureComponent() { return SceneCaptureComponent; };
 	FORCEINLINE UTextureRenderTarget2D* GetRenderTarget() { return RenderTarget; };
 
@@ -176,10 +181,23 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Recording")
 	UCameraMomentRecorder* MomentRecorder;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera|Recording")
+	bool bCameraLockedToMoments = false;
+
 public:
+
 	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
 	void RecordCameraMoment();
 
 	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
 	void GotoCameraMoment(int32 Index);
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	void GotoNextCameraHotPoint();
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	void GotoPreviousCameraHotPoint();
+
+	UFUNCTION(BlueprintCallable, Category = "Camera|Recording")
+	void SetCameraLockedToMoments(bool bLocked);
 };

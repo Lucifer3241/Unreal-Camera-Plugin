@@ -303,3 +303,32 @@ void ACameraDirectorPawn::GotoCameraMoment(int32 Index)
 	if(!MomentRecorder) return;
 	MomentRecorder->GoToMoment(this, Index);
 }
+
+void ACameraDirectorPawn::GotoNextCameraHotPoint()
+{
+	if(MomentRecorder)
+	{
+		MomentRecorder->GoToNextHotPoint(this);
+	}
+}
+
+void ACameraDirectorPawn::GotoPreviousCameraHotPoint()
+{
+	if(MomentRecorder)
+	{
+		MomentRecorder->GoToPreviousHotPoint(this);
+	}
+}
+
+void ACameraDirectorPawn::SetCameraLockedToMoments(bool bLocked)
+{
+	bCameraLockedToMoments = bLocked;
+	
+	SetAllowLook(!bLocked);
+	SetAllowMovement(!bLocked);
+
+	if (!SpringArm) return;
+
+	SpringArm->bUsePawnControlRotation = !bLocked;
+	SetCollisionEnabled(!bLocked);
+}
