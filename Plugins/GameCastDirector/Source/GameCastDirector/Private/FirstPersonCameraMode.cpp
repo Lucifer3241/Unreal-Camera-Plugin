@@ -3,6 +3,7 @@
 #include "GameFrameWork/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CameraTypeProfile.h"
+#include "Components/SceneCaptureComponent2D.h"
 
 void UFirstPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
@@ -24,6 +25,11 @@ void UFirstPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 	CameraPawn->CurrentCameraType = ECameraType::FirstPerson;
 	Camera->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 	Camera->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
+
+	USceneCaptureComponent2D* Capture = CameraPawn->GetSceneCaptureComponent();
+	if (!Capture) return;
+	Capture->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	Capture->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 	AActor* CurrentActor = CameraPawn->GetCurrentActor();
 	if (CurrentActor)

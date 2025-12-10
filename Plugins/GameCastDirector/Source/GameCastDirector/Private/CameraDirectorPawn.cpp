@@ -2,13 +2,16 @@
 
 
 #include "CameraDirectorPawn.h"
-#include "Kismet/GameplayStatics.h"
 #include "CameraTypeBase.h"
+#include "CameraTypeProfile.h"
+
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/FloatingPawnMovement.h"
+#include "Components/SceneCaptureComponent2D.h"
+#include "Engine/TextureRenderTarget2D.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
-#include "GameFramework/FloatingPawnMovement.h"
-#include "CameraTypeProfile.h"
 
 // Sets default values
 ACameraDirectorPawn::ACameraDirectorPawn()
@@ -41,6 +44,13 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 	MovementComponent->UpdatedComponent = RootComponent;
 
 	bUseControllerRotationYaw = true;
+
+	//Create default scene capture component
+	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent"));
+	SceneCaptureComponent->SetupAttachment(RootComponent);
+
+	SceneCaptureComponent->bCaptureEveryFrame = true;
+	SceneCaptureComponent->bCaptureOnMovement = true;
 
 }
 
@@ -86,6 +96,17 @@ void ACameraDirectorPawn::BeginPlay()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: Camera Mode %d does not have a valid profile for Actor %s"), (uint8)ModePair.Key, *ActorToUse->GetName());
 		}
+	}
+
+	if (!RenderTarget)
+	{
+		RenderTarget = NewObject<UTextureRenderTarget2D>(this);
+		RenderTarget->InitAutoFormat(1920, 1080);
+		RenderTarget->UpdateResource();
+	}
+	if (SceneCaptureComponent)
+	{
+		SceneCaptureComponent->TextureTarget = RenderTarget;
 	}
 
 	SetCurrentActor(ActorToUse);

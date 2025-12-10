@@ -4,6 +4,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CameraTypeProfile.h"
+#include "Components/SceneCaptureComponent2D.h"
 
 void UThirdPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 {
@@ -38,6 +39,11 @@ void UThirdPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 
 	SpringArm->AttachToComponent(CurrentActor->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	Camera->AttachToComponent(SpringArm, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	USceneCaptureComponent2D* Capture = CameraPawn->GetSceneCaptureComponent();
+	if (!Capture) return;
+	Capture->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	Capture->AttachToComponent(CameraPawn->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 	//get controller
 	AController* Controller = CameraPawn->GetController();
