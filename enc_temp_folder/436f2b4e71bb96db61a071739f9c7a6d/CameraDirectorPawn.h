@@ -113,8 +113,6 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "CameraMode")
 	void ApplyCameraMode(ECameraType Type);
 
-	void SyncSceneCaptureWithCamera();
-
 	// Spring arm component for camera positioning
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* SpringArm;

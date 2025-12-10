@@ -47,10 +47,10 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 
 	//Create default scene capture component
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent"));
-	SceneCaptureComponent->SetupAttachment(SpringArm);
+	SceneCaptureComponent->SetupAttachment(Camera);
 
-	SceneCaptureComponent->bCaptureEveryFrame = true;
-	SceneCaptureComponent->bCaptureOnMovement = false;
+	SceneCaptureComponent->bCaptureEveryFrame = false;
+	SceneCaptureComponent->bCaptureOnMovement = true;
 
 }
 
@@ -120,6 +120,11 @@ void ACameraDirectorPawn::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	DrawDebugSphere(GetWorld(), Camera->GetComponentLocation(), 10, 8, FColor::Green);
 	DrawDebugSphere(GetWorld(), SceneCaptureComponent->GetComponentLocation(), 10, 8, FColor::Red);
+
+	SceneCaptureComponent->CaptureScene();
+	//SceneCaptureComponent->AddLocalOffset(FVector(0.0001f, 0, 0));
+
+
 
 }
 

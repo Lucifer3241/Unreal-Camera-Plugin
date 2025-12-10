@@ -49,7 +49,7 @@ ACameraDirectorPawn::ACameraDirectorPawn()
 	SceneCaptureComponent = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent"));
 	SceneCaptureComponent->SetupAttachment(SpringArm);
 
-	SceneCaptureComponent->bCaptureEveryFrame = false;
+	SceneCaptureComponent->bCaptureEveryFrame = true;
 	SceneCaptureComponent->bCaptureOnMovement = false;
 
 }
@@ -252,20 +252,6 @@ void ACameraDirectorPawn::ApplyCameraMode(ECameraType Type)
 			CameraTypeInstance->CameraTypeLifecycle(this);
 		}
 	}
-
-	SyncSceneCaptureWithCamera();
-}
-
-void ACameraDirectorPawn::SyncSceneCaptureWithCamera()
-{
-	if (!SceneCaptureComponent || !Camera)
-		return;
-
-	// Match camera FOV immediately
-	SceneCaptureComponent->FOVAngle = Camera->FieldOfView;
-
-	// Force RT refresh
-	SceneCaptureComponent->CaptureScene();
 }
 
 void ACameraDirectorPawn::Move(const FInputActionValue& Value)
