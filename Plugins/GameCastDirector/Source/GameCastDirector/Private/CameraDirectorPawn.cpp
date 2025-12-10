@@ -4,6 +4,7 @@
 #include "CameraDirectorPawn.h"
 #include "CameraTypeBase.h"
 #include "CameraTypeProfile.h"
+#include "CameraMomentRecorder.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/FloatingPawnMovement.h"
@@ -73,6 +74,18 @@ void ACameraDirectorPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Set the input mode for the player controller
+	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			if (DefaultMappingContext)
+			{
+				Subsystem->AddMappingContext(DefaultMappingContext, 0);
+			}
+		}
+	}
+
 	//SetCameraMode(CameraMode);
 
 	// Get all actors of the specified class in the level
@@ -112,6 +125,8 @@ void ACameraDirectorPawn::BeginPlay()
 	SetCurrentActor(ActorToUse);
 	ApplyCameraMode(StartCameraType);
 	SpawnPreviewCameras();
+
+	MomentRecorder = NewObject<UCameraMomentRecorder>(this);	
 }
 
 // Called every frame
@@ -123,9 +138,6 @@ void ACameraDirectorPawn::Tick(float DeltaTime)
 
 	SceneCaptureComponent->CaptureScene();
 	//SceneCaptureComponent->AddLocalOffset(FVector(0.0001f, 0, 0));
-
-
-
 }
 
 // Called to bind functionality to input
@@ -141,6 +153,24 @@ void ACameraDirectorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACameraDirectorPawn::Look);
+
+		// Camera Modes
+		EnhancedInputComponent->BindAction(FirstPersonAction, ETriggerEvent::Started, this, 
+			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::FirstPerson);
+		EnhancedInputComponent->BindAction(ThirdPersonAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::ThirdPerson);
+		EnhancedInputComponent->BindAction(SpectatorAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::Spectator);
+		EnhancedInputComponent->BindAction(FreeRoamAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::ApplyCameraMode, ECameraType::FreeRoam);
+
+		//Moment Recording
+		EnhancedInputComponent->BindAction(RecordMomentAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::RecordCameraMoment);
+		EnhancedInputComponent->BindAction(NextMomentAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::GotoNextCameraHotPoint);
+		EnhancedInputComponent->BindAction(PreviousMomentAction, ETriggerEvent::Started, this,
+			&ACameraDirectorPawn::GotoPreviousCameraHotPoint);
 	}
 
 }
@@ -313,3 +343,43 @@ void ACameraDirectorPawn::SpawnPreviewCameras()
 	}
 }
 
+void ACameraDirectorPawn::RecordCameraMoment()
+{
+	if (!MomentRecorder) return;
+	MomentRecorder->RecordMoment(this);
+}
+
+//void ACameraDirectorPawn::GotoCameraMoment(int32 Index)
+//{
+//	if(!MomentRecorder) return;
+//	MomentRecorder->GoToMoment(this, Index);
+//}
+
+void ACameraDirectorPawn::GotoNextCameraHotPoint()
+{
+	if(MomentRecorder)
+	{
+		MomentRecorder->GoToNextHotPoint(this);
+	}
+}
+
+void ACameraDirectorPawn::GotoPreviousCameraHotPoint()
+{
+	if(MomentRecorder)
+	{
+		MomentRecorder->GoToPreviousHotPoint(this);
+	}
+}
+
+void ACameraDirectorPawn::SetCameraLockedToMoments(bool bLocked)
+{
+	bCameraLockedToMoments = bLocked;
+	
+	SetAllowLook(!bLocked);
+	SetAllowMovement(!bLocked);
+
+	if (!SpringArm) return;
+
+	SpringArm->bUsePawnControlRotation = !bLocked;
+	SetCollisionEnabled(!bLocked);
+}

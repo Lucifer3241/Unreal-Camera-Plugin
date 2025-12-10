@@ -14,6 +14,7 @@ void UFirstPersonCameraMode::AttachCamera(ACameraDirectorPawn* CameraPawn)
 	//	//already in this mode with same actor
 	//	return;
 	//}
+	//CameraPawn->SetCameraLockedToMoments(false);
 
 	USpringArmComponent* SpringArm = CameraPawn->GetSpringArmComponent();
 	if (!SpringArm) return;
