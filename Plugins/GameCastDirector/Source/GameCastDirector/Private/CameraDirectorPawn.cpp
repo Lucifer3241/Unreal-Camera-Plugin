@@ -111,7 +111,7 @@ void ACameraDirectorPawn::BeginPlay()
 
 	SetCurrentActor(ActorToUse);
 	ApplyCameraMode(StartCameraType);
-	
+	SpawnPreviewCameras();
 }
 
 // Called every frame
@@ -292,3 +292,24 @@ UCameraTypeProfile* ACameraDirectorPawn::GetCameraTypeProfile(ECameraType Type) 
 	UE_LOG(LogTemp, Warning, TEXT("CameraDirectorPawn: No CameraTypeProfile found for mode %d"), static_cast<uint8>(Type));
 	return nullptr;
 }
+
+void ACameraDirectorPawn::SpawnPreviewCameras()
+{
+	const int32 NumCameras = 12;
+
+	for (int i = 0; i < NumCameras; i++)
+	{
+		FActorSpawnParameters Params;
+		Params.Owner = this;
+
+		ACameraPreviewActor* Cam = GetWorld()->SpawnActor<ACameraPreviewActor>(
+			PreviewCameraClass,
+			FVector(0, i * 100, 300),   // space them out
+			FRotator::ZeroRotator,
+			Params
+		);
+
+		PreviewCameras.Add(Cam);
+	}
+}
+

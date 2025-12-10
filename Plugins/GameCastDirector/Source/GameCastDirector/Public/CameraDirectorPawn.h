@@ -7,6 +7,7 @@
 #include "CameraDirectorTypes.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "CameraPreviewActor.h"
 #include "CameraDirectorPawn.generated.h"
 
 class UCameraTypeBase;
@@ -107,6 +108,16 @@ public:
 	//copy camera settings from another CameraDirectorPawn
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void CopyCameraSettingsFrom(UCameraComponent* FromCamera, UCameraComponent* ToCamera);
+
+	UPROPERTY(BlueprintReadOnly, Category = "Preview Cameras")
+	TArray<ACameraPreviewActor*> PreviewCameras;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Preview Cameras")
+	TSubclassOf<class ACameraPreviewActor> PreviewCameraClass;
+
+
+	void SpawnPreviewCameras();
+
 
 protected:
 
