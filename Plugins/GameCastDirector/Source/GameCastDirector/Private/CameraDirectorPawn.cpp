@@ -383,3 +383,20 @@ void ACameraDirectorPawn::SetCameraLockedToMoments(bool bLocked)
 	SpringArm->bUsePawnControlRotation = !bLocked;
 	SetCollisionEnabled(!bLocked);
 }
+
+void ACameraDirectorPawn::SetRenderTargetTexture(UTextureRenderTarget2D* NewRenderTarget)
+{
+	if (!SceneCaptureComponent || !NewRenderTarget)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SetRenderTargetTexture: invalid SceneCapture or RenderTarget"));
+		return;
+	}
+
+	RenderTarget = NewRenderTarget;
+	SceneCaptureComponent->TextureTarget = RenderTarget;
+
+	// Optional: force an immediate capture so the UI updates next frame
+	SceneCaptureComponent->CaptureScene();
+
+	UE_LOG(LogTemp, Log, TEXT("CameraDirectorPawn: RenderTarget updated from widget"));
+}

@@ -42,6 +42,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Preview Camera")
 	FVector Offset = FVector(0.f, 0.f, 100.f);
 
+	UFUNCTION(BlueprintCallable)
+	FTransform GetPreviewTransform() const { return GetActorTransform(); }
+
+
 private:
 	AActor* LookAtTarget = nullptr;
 };

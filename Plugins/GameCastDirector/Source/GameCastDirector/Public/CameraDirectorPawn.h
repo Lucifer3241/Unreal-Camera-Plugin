@@ -192,6 +192,9 @@ public:
 	FORCEINLINE USceneCaptureComponent2D* GetSceneCaptureComponent() { return SceneCaptureComponent; };
 	FORCEINLINE UTextureRenderTarget2D* GetRenderTarget() { return RenderTarget; };
 
+	UFUNCTION(BlueprintCallable, Category = "Camera|Render")
+	void SetRenderTargetTexture(UTextureRenderTarget2D* NewRenderTarget);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera|Recording")
 	UCameraMomentRecorder* MomentRecorder;

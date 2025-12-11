@@ -12,7 +12,7 @@ ACameraPreviewActor::ACameraPreviewActor()
 	RootComponent = SceneCapture;
 
 	SceneCapture->bCaptureEveryFrame = false;     // we manually update each tick
-	SceneCapture->bCaptureOnMovement = true;
+	SceneCapture->bCaptureOnMovement = false;
 	SceneCapture->CaptureSource = ESceneCaptureSource::SCS_FinalColorLDR;
 }
 
