@@ -13,6 +13,11 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Stats/Stats.h"
+
+DECLARE_STATS_GROUP(TEXT("CameraDirectorPawn"), STATGROUP_CameraDirectorPawn, STATCAT_Advanced);
+DECLARE_CYCLE_STAT(TEXT("CameraDirectorPawn|Tick"), STAT_CameraDirectorPawn_Tick, STATGROUP_CameraDirectorPawn);
+DECLARE_CYCLE_STAT(TEXT("CameraDirectorPawn|ApplyCameraMode"), STAT_CameraDirectorPawn_ApplyCameraMode, STATGROUP_CameraDirectorPawn);
 
 // Sets default values
 ACameraDirectorPawn::ACameraDirectorPawn()
@@ -132,6 +137,8 @@ void ACameraDirectorPawn::BeginPlay()
 // Called every frame
 void ACameraDirectorPawn::Tick(float DeltaTime)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraDirectorPawn_Tick);
+
 	Super::Tick(DeltaTime);
 	DrawDebugSphere(GetWorld(), Camera->GetComponentLocation(), 10, 8, FColor::Green);
 	DrawDebugSphere(GetWorld(), SceneCaptureComponent->GetComponentLocation(), 10, 8, FColor::Red);
@@ -278,6 +285,8 @@ void ACameraDirectorPawn::CopyCameraSettingsFrom(UCameraComponent* FromCamera, U
 
 void ACameraDirectorPawn::ApplyCameraMode(ECameraType Type)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraDirectorPawn_ApplyCameraMode);
+
 	if (CameraTypes.Contains(Type))
 	{
 		CurrentCameraType = Type;
