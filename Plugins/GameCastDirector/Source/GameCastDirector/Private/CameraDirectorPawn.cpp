@@ -400,3 +400,23 @@ void ACameraDirectorPawn::SetRenderTargetTexture(UTextureRenderTarget2D* NewRend
 
 	UE_LOG(LogTemp, Log, TEXT("CameraDirectorPawn: RenderTarget updated from widget"));
 }
+
+void ACameraDirectorPawn::MoveToPreviewTransform(const FTransform& NewTransform)
+{
+	// Teleport pawn
+	SetActorTransform(NewTransform, false, nullptr, ETeleportType::TeleportPhysics);
+
+	// Force Controller to match rotation
+	if (AController* C = GetController())
+	{
+		C->SetControlRotation(NewTransform.Rotator());
+	}
+
+	// Fix SpringArm + Camera alignment
+	if (SpringArm)
+		SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
+
+	if (Camera)
+		Camera->SetRelativeRotation(FRotator::ZeroRotator);
+}
+

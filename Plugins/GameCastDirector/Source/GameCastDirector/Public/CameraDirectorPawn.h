@@ -118,6 +118,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Preview Cameras")
 	TSubclassOf<class ACameraPreviewActor> PreviewCameraClass;
 
+	UFUNCTION(BlueprintCallable)
+	void MoveToPreviewTransform(const FTransform& TargetTransform);
 
 	void SpawnPreviewCameras();
 

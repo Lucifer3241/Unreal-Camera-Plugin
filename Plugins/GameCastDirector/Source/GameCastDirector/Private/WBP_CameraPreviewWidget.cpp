@@ -8,11 +8,14 @@
 #include "CameraPreviewActor.h"
 #include "Engine/TextureRenderTarget2D.h"
 
+// --------------------
+// NativeConstruct
+// --------------------
 void UWBP_CameraPreviewWidget::NativeConstruct()
 {
     Super::NativeConstruct();
 
-    // ---- Bind Buttons ----
+    // Bind buttons function wrappers
     if (CamButton01) CamButton01->OnClicked.AddDynamic(this, &UWBP_CameraPreviewWidget::ClickCam01);
     if (CamButton02) CamButton02->OnClicked.AddDynamic(this, &UWBP_CameraPreviewWidget::ClickCam02);
     if (CamButton03) CamButton03->OnClicked.AddDynamic(this, &UWBP_CameraPreviewWidget::ClickCam03);
@@ -27,6 +30,9 @@ void UWBP_CameraPreviewWidget::NativeConstruct()
     if (CamButton12) CamButton12->OnClicked.AddDynamic(this, &UWBP_CameraPreviewWidget::ClickCam12);
 }
 
+// --------------------
+// Bind Preview Actors
+// --------------------
 void UWBP_CameraPreviewWidget::BindPreviewCameras(const TArray<ACameraPreviewActor*>& PreviewActors)
 {
     StoredPreviewActors = PreviewActors;
@@ -46,58 +52,16 @@ void UWBP_CameraPreviewWidget::BindPreviewCameras(const TArray<ACameraPreviewAct
         if (!Preview || !Preview->RenderTarget)
             continue;
 
+        // Create thumbnail MID
         ThumbnailMID[i] = UMaterialInstanceDynamic::Create(PreviewMaterial, this);
         ThumbnailMID[i]->SetTextureParameterValue("PreviewTexture", Preview->RenderTarget);
 
         Thumbs[i]->SetBrushFromMaterial(ThumbnailMID[i]);
     }
 
-    // Create MID for main preview
-    MainMID = UMaterialInstanceDynamic::Create(PreviewMaterial, this);
-    MainPreviewImage->SetBrushFromMaterial(MainMID);
-
-
-    // Default main preview = Cam01
+    // Default selection
     SelectPreview(0);
 }
-
-void UWBP_CameraPreviewWidget::SelectPreview(int Index)
-{
-    if (!StoredPreviewActors.IsValidIndex(Index))
-        return;
-
-    SelectedIndex = Index;
-
-    ACameraPreviewActor* Preview = StoredPreviewActors[Index];
-    if (!Preview)
-        return;
-
-    // --- Get Director Pawn ---
-    APlayerController* PC = GetWorld()->GetFirstPlayerController();
-    if (!PC) return;
-
-    ACameraDirectorPawn* Director = Cast<ACameraDirectorPawn>(PC->GetPawn());
-    if (!Director) return;
-
-    // --- MOVE DIRECTOR PAWN TO PREVIEW CAM LOCATION ---
-    Director->SetActorLocation(Preview->GetActorLocation());
-    Director->SetActorRotation(Preview->GetActorRotation());
-
-    // Make the camera match
-    Director->GetSpringArmComponent()->SetRelativeRotation(FRotator::ZeroRotator);
-    Director->GetCameraComponent()->SetRelativeRotation(FRotator::ZeroRotator);
-
-    // --- MAIN PREVIEW SHOULD SHOW DIRECTOR'S RENDER TARGET ---
-    if (!MainMID)
-    {
-        MainMID = UMaterialInstanceDynamic::Create(PreviewMaterial, this);
-        MainPreviewImage->SetBrushFromMaterial(MainMID);
-    }
-
-    MainMID->SetTextureParameterValue("PreviewTexture", Director->GetRenderTarget());
-}
-
-
 
 UTextureRenderTarget2D* UWBP_CameraPreviewWidget::GetSelectedRenderTarget() const
 {
@@ -108,7 +72,66 @@ UTextureRenderTarget2D* UWBP_CameraPreviewWidget::GetSelectedRenderTarget() cons
     return Preview ? Preview->RenderTarget : nullptr;
 }
 
-// ---- Wrapper Click Functions ----
+
+// --------------------
+// Select Preview (UPDATED)
+// --------------------
+void UWBP_CameraPreviewWidget::SelectPreview(int Index)
+{
+    if (!StoredPreviewActors.IsValidIndex(Index)) return;
+
+    SelectedIndex = Index;
+
+    ACameraPreviewActor* Preview = StoredPreviewActors[Index];
+    if (!Preview) return;
+
+    // MAIN PREVIEW IMAGE
+    if (MainMID)
+    {
+        MainMID->SetTextureParameterValue(TEXT("PreviewTexture"), Preview->RenderTarget);
+        MainPreviewImage->SetBrushFromMaterial(MainMID);
+    }
+
+    // MOVE DIRECTOR PAWN
+    APlayerController* PC = GetWorld()->GetFirstPlayerController();
+    if (!PC) return;
+
+    ACameraDirectorPawn* Director = Cast<ACameraDirectorPawn>(PC->GetPawn());
+    if (Director)
+        Director->MoveToPreviewTransform(Preview->GetActorTransform());
+
+    // MOVE ALL PLAYER CHARACTERS TO MATCH PREVIEW LOCATION + ROTATION
+    UWorld* World = GetWorld();
+    if (!World) return;
+
+    FVector  PreviewLoc = Preview->GetActorLocation();
+    FRotator PreviewRot = Preview->GetActorRotation();
+
+    for (FConstPlayerControllerIterator It = World->GetPlayerControllerIterator(); It; ++It)
+    {
+        APlayerController* PCX = It->Get();
+        if (!PCX) continue;
+
+        APawn* P = PCX->GetPawn();
+        if (!P) continue;
+
+        // move pawn
+        P->SetActorLocationAndRotation(
+            PreviewLoc,
+            PreviewRot,
+            false,
+            nullptr,
+            ETeleportType::TeleportPhysics);
+
+        // sync controller
+        PCX->SetControlRotation(PreviewRot);
+    }
+}
+
+
+// --------------------
+// Click Wrappers
+// --------------------
 void UWBP_CameraPreviewWidget::ClickCam01() { SelectPreview(0); }
 void UWBP_CameraPreviewWidget::ClickCam02() { SelectPreview(1); }
 void UWBP_CameraPreviewWidget::ClickCam03() { SelectPreview(2); }
