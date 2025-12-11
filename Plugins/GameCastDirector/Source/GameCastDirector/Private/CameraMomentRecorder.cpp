@@ -6,9 +6,24 @@
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Camera/CameraComponent.h"
+#include "Stats/Stats.h"
+
+//Performance Tracking
+DECLARE_STATS_GROUP(TEXT("CameraMomentRecorder"), STATGROUP_CameraMomentRecorder, STATCAT_Advanced);
+DECLARE_CYCLE_STAT(TEXT("CameraMomentRecorder|RecordMoment"), STAT_CameraMomentRecorder_RecordMoment, STATGROUP_CameraMomentRecorder);
+DECLARE_CYCLE_STAT(TEXT("CameraMomentRecorder|GoToMoment"), STAT_CameraMomentRecorder_GoToMoment, STATGROUP_CameraMomentRecorder);
+DECLARE_CYCLE_STAT(TEXT("CameraMomentRecorder|GoToNextHotPoint"), STAT_CameraMomentRecorder_GoToNextHotPoint, STATGROUP_CameraMomentRecorder);
+DECLARE_CYCLE_STAT(TEXT("CameraMomentRecorder|GoToPreviousHotPoint"), STAT_CameraMomentRecorder_GoToPreviousHotPoint, STATGROUP_CameraMomentRecorder);
+
+//Memory Tracking
+//LLM_DECLARE_TAG(CameraMomentRecorder);
+//LLM_DEFINE_TAG(CameraMomentRecorder, "CameraMomentRecorder", false);
 
 void UCameraMomentRecorder::RecordMoment(ACameraDirectorPawn* CameraPawn)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraMomentRecorder_RecordMoment);
+	//LLM_SCOPE_BYTAG(CameraMomentRecorder);
+
 	if (!CameraPawn) return;
 
 	UCameraComponent* Camera = CameraPawn->GetCameraComponent();
@@ -44,6 +59,9 @@ void UCameraMomentRecorder::RecordMoment(ACameraDirectorPawn* CameraPawn)
 
 void UCameraMomentRecorder::GoToMoment(ACameraDirectorPawn* CameraPawn, int32 Index)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraMomentRecorder_GoToMoment);
+	//LLM_SCOPE_BYTAG(CameraMomentRecorder);
+
 	if (!CameraPawn) return;
 	
 	if (!RecordedMoments.IsValidIndex(Index)) return;
@@ -75,6 +93,9 @@ void UCameraMomentRecorder::GoToMoment(ACameraDirectorPawn* CameraPawn, int32 In
 
 void UCameraMomentRecorder::GoToNextHotPoint(ACameraDirectorPawn* CameraPawn)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraMomentRecorder_GoToNextHotPoint);
+	//LLM_SCOPE_BYTAG(CameraMomentRecorder);
+
 	if (!CameraPawn) return;
 	if (RecordedMoments.Num() == 0) return;
 
@@ -85,6 +106,9 @@ void UCameraMomentRecorder::GoToNextHotPoint(ACameraDirectorPawn* CameraPawn)
 
 void UCameraMomentRecorder::GoToPreviousHotPoint(ACameraDirectorPawn* CameraPawn)
 {
+	SCOPE_CYCLE_COUNTER(STAT_CameraMomentRecorder_GoToPreviousHotPoint);
+	//LLM_SCOPE_BYTAG(CameraMomentRecorder);
+
 	if(!CameraPawn) return;
 	if (RecordedMoments.Num() == 0) return;
 
